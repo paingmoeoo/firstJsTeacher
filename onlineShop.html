@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Basic styling for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Styling for the header */
+        .main-header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        /* Styling for the navigation */
+        .main-nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-nav ul li {
+            margin: 0 1em;
+        }
+
+        .main-nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .main-nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        section {
+            padding: 2em;
+        }
+
+        /* Grid layout for items */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+        }
+
+        /* Styling for each item */
+        .item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1em;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .item strong {
+            display: block;
+            margin: 0.5em 0;
+        }
+
+        .item span {
+            display: block;
+            margin: 0.5em 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .item button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .item button:hover {
+            background-color: #555;
+        }
+
+        /* Styling for the cart section */
+        .cart {
+            margin-top: 2em;
+            text-align: center;
+        }
+
+        .cart-items {
+            margin-top: 1em;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-items li {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 0.5em 0;
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items li div {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-items li button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5em;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: 1em;
+        }
+
+        .cart-items li button:hover {
+            background-color: #555;
+        }
+
+        .cart-total {
+            margin-top: 2em;
+        }
+    </style>
+
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-nav nav">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">Store</a></li>
+                <li><a href="">About</a></li>
+            </ul>
+        </nav>
+        <hr>
+        <h1>The Generics</h1>
+    </header>
+    <section>
+        <h2>Classic</h2>
+        <div class="item-grid">
+            <div class="item">
+                <strong>Nike #001</strong>
+                <img src="img/burger.png" alt="Burger">
+                <span>12.99</span>
+                <button onclick="addtoCard('Burger', 12.99)" type="button">Add to Cart</button>
+            </div>
+            <div class="item">
+                <strong>Nike #001</strong>
+                <img src="img/orange_juice.png" alt="Orange Juice">
+                <span>12.99</span>
+                <button onclick="addtoCard('Orange Juice',12.99)" type="button">Add to Cart</button>
+            </div>
+            <div class="item">
+                <strong>Nike #001</strong>
+                <img src="img/coffee.png" alt="Coffee">
+                <span>12.99</span>
+                <button onclick="addtoCard('Coffee',12.99)" type="button">Add to Cart</button>
+            </div>
+            <div class="item">
+                <strong>Nike #001</strong>
+                <img src="img/sandwich.png" alt="Sandwich">
+                <span>12.99</span>
+                <button onclick="addtoCard('Sandwich',12.99)" type="button">Add to Cart</button>
+            </div>
+            <div class="item">
+                <strong>Nike #001</strong>
+                <img src="img/spaghetti.png" alt="Spaghetti">
+                <span>12.99</span>
+                <button onclick="addtoCard('Spaghetti',12.99)" type="button">Add to Cart</button>
+            </div>
+            <div class="item">
+                <strong>Nike #001</strong>
+                <img src="img/sushi.png" alt="Sushi">
+                <span>12.99</span>
+                <button onclick="addtoCard('Sushi',12.99)" type="button">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="cart">
+        <h2>Shopping Cart</h2>
+        <ul class="cart-items" id="cart-items"></ul>
+        <div class="cart-total">
+            <h2>Total amount : $ <span id="total-amount">0.00</span></h2>
+        </div>
+    
+    </div>
+    <script>
+        // Initialize an empty cart array
+        let cart = [];
+
+        // Function to add an item to the cart
+        function addtoCard(name, price) {
+            // Find the item in the cart by name
+            const item = cart.find(function(i) {
+                return i.name === name;
+            });
+
+            // If the item is found, increment its quantity and update the total price
+            if (item) {
+                item.quantity++;
+                item.total += price;
+            } else {
+                // If the item is not found, add it to the cart with initial quantity and total price
+                cart.push({ name: name, price: price, quantity: 1, total: price });
+            }
+
+            // Update the cart display
+            displayCart();
+        }
+
+        // Function to decrease the quantity of an item in the cart
+        function decreaseQuantity(name) {
+            // Find the item in the cart by name
+            const item = cart.find(function(i) {
+                return i.name === name;
+            });
+
+            // If the item is found and its quantity is greater than 1, decrement its quantity and update the total price
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                item.total -= item.price;
+            } else if (item && item.quantity === 1) {
+                // If the item's quantity is 1, remove it from the cart
+                removeFromCart(name);
+            }
+
+            // Update the cart display
+            displayCart();
+        }
+
+        // Function to remove an item from the cart
+        function removeFromCart(name) {
+            // Find the index of the item in the cart by name
+            const itemIndex = cart.findIndex(function(i) {
+                return i.name === name;
+            });
+
+            // If the item is found, remove it from the cart
+            if (itemIndex !== -1) {
+                cart.splice(itemIndex, 1);
+            }
+
+            // Update the cart display
+            displayCart();
+        }
+
+        // Function to display the cart items and total amount
+        function displayCart() {
+            // Get the cart items element
+            const cartItems = document.getElementById('cart-items');
+            // Clear the cart items list
+            cartItems.innerHTML = '';
+            // Initialize the total amount
+            let totalAmount = 0;
+
+            // Iterate over each item in the cart
+            cart.forEach(function(item) {
+                // Create a new list item for each cart item
+                const li = document.createElement('li');
+                // Create a div to hold the item details
+                const itemDetails = document.createElement('div');
+                // Set the inner HTML of the item details to display the item name, quantity, price, and total
+                itemDetails.innerHTML = `${item.name} - Quantity: ${item.quantity} - Price: $${item.price.toFixed(2)} - Total: $${item.total.toFixed(2)}`;
+
+                // Create a decrease quantity button
+                const decreaseButton = document.createElement('button');
+                decreaseButton.innerText = '-';
+                decreaseButton.onclick = function() {
+                    decreaseQuantity(item.name);
+                };
+
+                // Create a remove item button
+                const removeButton = document.createElement('button');
+                removeButton.innerText = 'Remove';
+                removeButton.onclick = function() {
+                    removeFromCart(item.name);
+                };
+
+                // Append the item details, decrease button, and remove button to the list item
+                li.appendChild(itemDetails);
+                li.appendChild(decreaseButton);
+                li.appendChild(removeButton);
+                // Append the list item to the cart items element
+                cartItems.appendChild(li);
+                // Update the total amount
+                totalAmount += item.total;
+            });
+
+            // Update the total amount display
+            document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
